@@ -41,12 +41,24 @@ reset_targets() {
 # settings afterwards, so only missing files are generated.
 dms_defaults() {
     command -v dms >/dev/null || return 0
-    local part dir="${XDG_CONFIG_HOME:-$HOME/.config}/niri/dms"
+    local part out tool="" dir="${XDG_CONFIG_HOME:-$HOME/.config}/niri/dms"
+    # dms setup insists on a privilege tool being available (it never uses it for
+    # these per-user files). Pick one so it doesn't stop to ask which.
+    for tool in sudo run0 doas ""; do
+        [[ -z "$tool" ]] || command -v "$tool" >/dev/null && break
+    done
+    if [[ -z "$tool" ]]; then
+        echo "hafnium-dots: no sudo/run0/doas, skipping DMS defaults" >&2
+        return 0
+    fi
     for part in binds alttab layout windowrules cursor; do
         [[ -e "$dir/$part.kdl" ]] && continue
-        DMS_PRIVESC=sudo dms setup "$part" </dev/null >/dev/null 2>&1 \
-            && echo "hafnium-dots: generated DMS default $part.kdl" \
-            || echo "hafnium-dots: dms setup $part failed" >&2
+        if out="$(DMS_PRIVESC="$tool" dms setup "$part" </dev/null 2>&1)"; then
+            echo "hafnium-dots: generated DMS default $part.kdl"
+        else
+            echo "hafnium-dots: dms setup $part failed:" >&2
+            printf '%s\n' "$out" | grep -v '^\s*$' | head -3 >&2
+        fi
     done
 }
 
