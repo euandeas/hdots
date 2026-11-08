@@ -1,0 +1,21 @@
+input {
+    keyboard {
+        // Empty xkb: niri reads the layout from org.freedesktop.locale1,
+        // so the keyboard picked in the installer just works.
+        // Change it with: localectl set-x11-keymap <layout>
+        xkb {}
+        numlock
+    }
+
+    touchpad {
+        tap
+        natural-scroll
+        click-method "clickfinger"
+    }
+
+    mouse {
+        accel-profile "flat"
+    }
+
+    trackpoint {}
+}

@@ -1,0 +1,19 @@
+// Your niri overrides. Hafnium created this file once and will never overwrite it.
+// It's included after the Hafnium and DMS configs, so anything here wins.
+// Docs: https://niri-wm.github.io/niri/Configuration:-Introduction
+//
+// Examples:
+//
+// output "DP-1" {
+//     mode "2560x1440@165"
+//     variable-refresh-rate on-demand=true
+// }
+//
+// input {
+//     keyboard { xkb { layout "gb"; } }
+//     focus-follows-mouse max-scroll-amount="0%"
+// }
+//
+// binds {
+//     Mod+B { spawn "firefox"; }
+// }

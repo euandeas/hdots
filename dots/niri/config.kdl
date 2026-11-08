@@ -1,0 +1,26 @@
+// Hafnium niri entrypoint.
+// https://niri-wm.github.io/niri/  ·  https://duxlabs.dev/docs/
+//
+// DO NOT EDIT. This file is a symlink to /usr/share/hafnium/dots/niri/config.kdl
+// and follows Hafnium updates. Put your changes in:
+//   ~/.config/niri/local.kdl   (just you)
+//   /etc/niri/local.kdl        (every user on this machine)
+// To replace this file entirely, declare "~/.config/niri/config.kdl" in your own
+// ~/.config/mise/config.toml.
+
+// 1. Hafnium defaults (binds, input, layout, window rules)
+include "/usr/share/hafnium/dots/niri/hafnium.kdl"
+
+// 2. Files generated and managed by DMS (Dux) from its settings UI
+include optional=true "dms/alttab.kdl"
+include optional=true "dms/binds.kdl"
+include optional=true "dms/colors.kdl"
+include optional=true "dms/layout.kdl"
+include optional=true "dms/wpblur.kdl"
+include optional=true "dms/outputs.kdl"
+include optional=true "dms/cursor.kdl"
+include optional=true "dms/windowrules.kdl"
+include optional=true "dms/input.kdl"
+
+// 3. Your overrides. Last, so they win.
+include optional=true "local.kdl"

@@ -1,0 +1,91 @@
+#!/usr/bin/bash
+# hafnium-dots: apply Hafnium's default dotfiles (and your own mise dotfiles)
+# without overwriting anything you've changed.
+#
+#   hafnium-dots apply            deploy missing targets + DMS niri defaults (the login service runs this)
+#   hafnium-dots reset <target>…  restore targets to their default (your copy is backed up)
+#   hafnium-dots reset-all        restore every Hafnium-managed target
+#   hafnium-dots status           show `mise dot status`
+set -euo pipefail
+
+HAFNIUM_CONF=/etc/mise/conf.d/hafnium.toml
+
+usage() {
+    sed -n '2,8p' "$0" | sed 's/^# \{0,1\}//'
+}
+
+# Targets declared by the Hafnium layer that are still in effect
+# (an entry in your own config with the same target replaces Hafnium's).
+hafnium_targets() {
+    mise dot status --json | jq -r --arg conf "$HAFNIUM_CONF" \
+        '.files[] | select(.origin.config == $conf) | .target'
+}
+
+# Seeds use create_if_missing, so `apply --force` alone leaves an existing copy in
+# place. Move real files aside (timestamped backup) and then re-apply.
+reset_targets() {
+    local t p stamp
+    stamp="$(date +%Y%m%d-%H%M%S)"
+    for t in "$@"; do
+        p="${t/#\~/$HOME}"
+        if [[ -e "$p" && ! -L "$p" ]]; then
+            mv -- "$p" "$p.hafnium-bak-$stamp"
+            echo "hafnium-dots: backed up $t -> $t.hafnium-bak-$stamp"
+        fi
+    done
+    mise dot apply --yes --force "$@"
+}
+
+# Let DMS write its own default niri includes (keybinds, alt-tab, layout, window
+# rules, cursor) into ~/.config/niri/dms/ the first time. DMS rewrites them from its
+# settings afterwards, so only missing files are generated.
+dms_defaults() {
+    command -v dms >/dev/null || return 0
+    local part dir="${XDG_CONFIG_HOME:-$HOME/.config}/niri/dms"
+    for part in binds alttab layout windowrules cursor; do
+        [[ -e "$dir/$part.kdl" ]] && continue
+        DMS_PRIVESC=sudo dms setup "$part" </dev/null >/dev/null 2>&1 \
+            && echo "hafnium-dots: generated DMS default $part.kdl" \
+            || echo "hafnium-dots: dms setup $part failed" >&2
+    done
+}
+
+case "${1:-apply}" in
+    apply)
+        # Only "missing" targets. "differs" means you've changed it or a file is in the way,
+        # so leave it alone. It's the equivalent of chezmoi's "skip".
+        mapfile -t targets < <(mise dot status --json | jq -r '.files[] | select(.state == "missing") | .target')
+        if ((${#targets[@]} == 0)); then
+            echo "hafnium-dots: everything is in place"
+        else
+            mise dot apply --yes "${targets[@]}"
+        fi
+        dms_defaults
+        ;;
+    reset)
+        shift
+        if (($# == 0)); then
+            echo "usage: hafnium-dots reset <target>…  (e.g. ~/.config/ghostty/config)" >&2
+            exit 2
+        fi
+        reset_targets "$@"
+        ;;
+    reset-all)
+        mapfile -t targets < <(hafnium_targets)
+        ((${#targets[@]})) || { echo "hafnium-dots: no Hafnium targets in effect"; exit 0; }
+        printf 'This overwrites:\n'; printf '  %s\n' "${targets[@]}"
+        read -r -p "Continue? [y/N] " ok
+        [[ "$ok" =~ ^[Yy] ]] || exit 0
+        reset_targets "${targets[@]}"
+        ;;
+    status)
+        exec mise dot status
+        ;;
+    -h | --help | help)
+        usage
+        ;;
+    *)
+        usage >&2
+        exit 2
+        ;;
+esac

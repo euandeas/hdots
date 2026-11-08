@@ -1,0 +1,23 @@
+window-rule {
+    clip-to-geometry true
+}
+
+window-rule {
+    match app-id=r#"^com\.mitchellh\.ghostty$"#
+    draw-border-with-background false
+}
+
+window-rule {
+    match app-id=r#"firefox$"# title="^Picture-in-Picture$"
+    open-floating true
+}
+
+// Small utility windows float
+window-rule {
+    match app-id=r#"^org\.gnome\.Calculator$"#
+    match app-id=r#"^xdg-desktop-portal"#
+    match app-id=r#"^org\.quickshell$"#
+    match app-id=r#"^com\.danklinux\.dms$"#
+    match app-id=r#"^dev\.duxlabs\."#
+    open-floating true
+}
