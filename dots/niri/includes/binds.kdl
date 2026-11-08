@@ -2,5 +2,5 @@
 // DMS generates the main set into ~/.config/niri/dms/binds.kdl on first login
 // (`dms setup binds`) and manages it from its settings UI.
 binds {
-    Mod+E hotkey-overlay-title="Open File Manager" { spawn "nautilus"; }
+    Mod+E hotkey-overlay-title="Open File Manager" { spawn "dfiles" "open"; }
 }
