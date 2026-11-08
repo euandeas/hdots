@@ -27,6 +27,9 @@
 # DMS: Flexoki theme (/usr/share/hafnium/themes/flexoki.json). DMS rewrites this file from its settings UI.
 "~/.config/dms/settings.json" = { source = "/usr/share/hafnium/dots/dms/settings.json", mode = "copy", create_if_missing = true }
 
+# DMS clipboard history: 100 entries, 5 MiB each, cleared after 2 days and at login
+"~/.config/dms/clsettings.json" = { source = "/usr/share/hafnium/dots/dms/clsettings.json", mode = "copy", create_if_missing = true }
+
 # DMS session: dark mode, Flexoki orb wallpapers that switch with light/dark mode
 "~/.local/state/dms/session.json" = { source = "/usr/share/hafnium/dots/dms/session.json", mode = "copy", create_if_missing = true }
 
