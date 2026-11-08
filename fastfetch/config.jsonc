@@ -11,6 +11,7 @@
   "display": {
     "separator": "  ",
     "color": { "keys": "blue", "title": "blue" },
+    // Values start at this column, so keys must be shorter (hence "WM", "Font")
     "key": { "width": 12 }
   },
   "modules": [
@@ -27,19 +28,19 @@
     "uptime",
     "packages",
     "shell",
-    "wm",
+    { "type": "wm", "key": "WM" },
     {
       "type": "command",
       "key": "Shell UI",
       "text": "printf 'DMS %s' \"$(rpm -q --qf '%{VERSION}' dms 2>/dev/null)\""
     },
     "terminal",
-    "terminalfont",
+    { "type": "terminalfont", "key": "Font" },
     "cpu",
     "gpu",
     "memory",
-    "disk",
-    "battery",
+    { "type": "disk", "key": "Disk", "folders": "/" },
+    { "type": "battery", "key": "Battery" },
     "break",
     "colors"
   ]
