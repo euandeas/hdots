@@ -3,5 +3,7 @@
   "currentThemeCategory": "custom",
   "customThemeFile": "/usr/share/kansora/themes/flexoki.json",
   "fontFamily": "Adwaita Sans",
-  "monoFontFamily": "CommitMono Nerd Font Mono"
+  "monoFontFamily": "CommitMono Nerd Font Mono",
+  "mouseAccelProfile": "flat",
+  "touchpadClickMethod": "clickfinger"
 }

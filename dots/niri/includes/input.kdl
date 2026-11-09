@@ -7,15 +7,8 @@ input {
         numlock
     }
 
-    touchpad {
-        tap
-        natural-scroll
-        click-method "clickfinger"
-    }
-
-    mouse {
-        accel-profile "flat"
-    }
-
-    trackpoint {}
+    // Mouse and touchpad live in DMS (Settings -> Mouse & Touchpad), which writes
+    // ~/.config/niri/dms/input.kdl on every start. niri doesn't merge mouse/touchpad
+    // sections across files, so anything set here would be replaced by that file.
+    // Kansora's defaults (flat mouse acceleration, clickfinger) are in DMS's settings.json.
 }
