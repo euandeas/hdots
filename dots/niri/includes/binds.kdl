@@ -1,4 +1,4 @@
-// Hafnium keybinds that DMS's defaults don't cover.
+// Kansora keybinds that DMS's defaults don't cover.
 // DMS generates the main set into ~/.config/niri/dms/binds.kdl on first login
 // (`dms setup binds`) and manages it from its settings UI.
 binds {

@@ -1,13 +1,13 @@
 name: Check
 
-# Runs Hafnium's checks (build-scripts/check in euandeas/hafnium) against this
-# commit of hdots: builds hafnium-dots, dry-runs the install, deploys the default
+# Runs Kansora's checks (build-scripts/check in euandeas/kansora) against this
+# commit of kdots: builds kansora-dots, dry-runs the install, deploys the default
 # dotfiles in a throwaway $HOME and validates the resulting niri config.
 #
-# On main, it then asks hafnium to rebuild and publish the package repo. That
-# needs a HAFNIUM_DISPATCH_TOKEN secret here: a fine-grained token with
-# "Actions: read and write" on euandeas/hafnium. Without it, the publish step is
-# skipped and hafnium's nightly run picks the change up.
+# On main, it then asks kansora to rebuild and publish the package repo. That
+# needs a KANSORA_DISPATCH_TOKEN secret here: a fine-grained token with
+# "Actions: read and write" on euandeas/kansora. Without it, the publish step is
+# skipped and kansora's nightly run picks the change up.
 
 on:
   push:
@@ -16,19 +16,19 @@ on:
 
 jobs:
   check:
-    uses: euandeas/hafnium/.github/workflows/check.yml@main
+    uses: euandeas/kansora/.github/workflows/check.yml@main
 
   publish:
     needs: check
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     runs-on: ubuntu-24.04
     steps:
-      - name: Trigger hafnium's package repo build
+      - name: Trigger kansora's package repo build
         env:
-          GH_TOKEN: ${{ secrets.HAFNIUM_DISPATCH_TOKEN }}
+          GH_TOKEN: ${{ secrets.KANSORA_DISPATCH_TOKEN }}
         run: |
           if [ -z "$GH_TOKEN" ]; then
-            echo "::notice::No HAFNIUM_DISPATCH_TOKEN secret; hafnium's nightly build will publish this."
+            echo "::notice::No KANSORA_DISPATCH_TOKEN secret; kansora's nightly build will publish this."
             exit 0
           fi
-          gh workflow run repo.yml -R "${{ github.repository_owner }}/hafnium"
+          gh workflow run repo.yml -R "${{ github.repository_owner }}/kansora"

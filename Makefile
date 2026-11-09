@@ -1,6 +1,6 @@
 # Builds the source RPM. Used by the GitHub Actions repo workflow and `just rpm`.
 #   make srpm outdir=<dir>
-NAME    := hafnium-dots
+NAME    := kansora-dots
 TOP     := $(shell git rev-parse --show-toplevel)
 GIT     := git -c safe.directory='*' -C "$(TOP)"
 VERSION := $(shell sed -n 's/^Version:[[:space:]]*//p' "$(TOP)/$(NAME).spec")

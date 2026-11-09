@@ -1,23 +1,23 @@
 #!/usr/bin/bash
-# hafnium-dots: apply Hafnium's default dotfiles (and your own mise dotfiles)
+# kansora-dots: apply Kansora's default dotfiles (and your own mise dotfiles)
 # without overwriting anything you've changed.
 #
-#   hafnium-dots apply            deploy missing targets + DMS niri defaults (the login service runs this)
-#   hafnium-dots reset <target>…  restore targets to their default (your copy is backed up)
-#   hafnium-dots reset-all        restore every Hafnium-managed target
-#   hafnium-dots status           show `mise dot status`
+#   kansora-dots apply            deploy missing targets + DMS niri defaults (the login service runs this)
+#   kansora-dots reset <target>…  restore targets to their default (your copy is backed up)
+#   kansora-dots reset-all        restore every Kansora-managed target
+#   kansora-dots status           show `mise dot status`
 set -euo pipefail
 
-HAFNIUM_CONF=/etc/mise/conf.d/hafnium.toml
+KANSORA_CONF=/etc/mise/conf.d/kansora.toml
 
 usage() {
     sed -n '2,8p' "$0" | sed 's/^# \{0,1\}//'
 }
 
-# Targets declared by the Hafnium layer that are still in effect
-# (an entry in your own config with the same target replaces Hafnium's).
-hafnium_targets() {
-    mise dot status --json | jq -r --arg conf "$HAFNIUM_CONF" \
+# Targets declared by the Kansora layer that are still in effect
+# (an entry in your own config with the same target replaces Kansora's).
+kansora_targets() {
+    mise dot status --json | jq -r --arg conf "$KANSORA_CONF" \
         '.files[] | select(.origin.config == $conf) | .target'
 }
 
@@ -29,8 +29,8 @@ reset_targets() {
     for t in "$@"; do
         p="${t/#\~/$HOME}"
         if [[ -e "$p" && ! -L "$p" ]]; then
-            mv -- "$p" "$p.hafnium-bak-$stamp"
-            echo "hafnium-dots: backed up $t -> $t.hafnium-bak-$stamp"
+            mv -- "$p" "$p.kansora-bak-$stamp"
+            echo "kansora-dots: backed up $t -> $t.kansora-bak-$stamp"
         fi
     done
     mise dot apply --yes --force "$@"
@@ -48,15 +48,15 @@ dms_defaults() {
         [[ -z "$tool" ]] || command -v "$tool" >/dev/null && break
     done
     if [[ -z "$tool" ]]; then
-        echo "hafnium-dots: no sudo/run0/doas, skipping DMS defaults" >&2
+        echo "kansora-dots: no sudo/run0/doas, skipping DMS defaults" >&2
         return 0
     fi
     for part in binds alttab layout windowrules cursor; do
         [[ -e "$dir/$part.kdl" ]] && continue
         if out="$(DMS_PRIVESC="$tool" dms setup "$part" </dev/null 2>&1)"; then
-            echo "hafnium-dots: generated DMS default $part.kdl"
+            echo "kansora-dots: generated DMS default $part.kdl"
         else
-            echo "hafnium-dots: dms setup $part failed:" >&2
+            echo "kansora-dots: dms setup $part failed:" >&2
             printf '%s\n' "$out" | grep -v '^\s*$' | head -3 >&2
         fi
     done
@@ -64,11 +64,20 @@ dms_defaults() {
 
 case "${1:-apply}" in
     apply)
+        # A target that's a broken symlink (e.g. into a package path that moved) holds
+        # nothing of yours, so clear it and let it be redeployed below.
+        while read -r t; do
+            p="${t/#\~/$HOME}"
+            if [[ -L "$p" && ! -e "$p" ]]; then
+                rm -f -- "$p"
+                echo "kansora-dots: replacing broken link $t"
+            fi
+        done < <(mise dot status --json | jq -r '.files[] | select(.state == "differs") | .target')
         # Only "missing" targets. "differs" means you've changed it or a file is in the way,
         # so leave it alone. It's the equivalent of chezmoi's "skip".
         mapfile -t targets < <(mise dot status --json | jq -r '.files[] | select(.state == "missing") | .target')
         if ((${#targets[@]} == 0)); then
-            echo "hafnium-dots: everything is in place"
+            echo "kansora-dots: everything is in place"
         else
             mise dot apply --yes "${targets[@]}"
         fi
@@ -77,14 +86,14 @@ case "${1:-apply}" in
     reset)
         shift
         if (($# == 0)); then
-            echo "usage: hafnium-dots reset <target>…  (e.g. ~/.config/ghostty/config)" >&2
+            echo "usage: kansora-dots reset <target>…  (e.g. ~/.config/ghostty/config)" >&2
             exit 2
         fi
         reset_targets "$@"
         ;;
     reset-all)
-        mapfile -t targets < <(hafnium_targets)
-        ((${#targets[@]})) || { echo "hafnium-dots: no Hafnium targets in effect"; exit 0; }
+        mapfile -t targets < <(kansora_targets)
+        ((${#targets[@]})) || { echo "kansora-dots: no Kansora targets in effect"; exit 0; }
         printf 'This overwrites:\n'; printf '  %s\n' "${targets[@]}"
         read -r -p "Continue? [y/N] " ok
         [[ "$ok" =~ ^[Yy] ]] || exit 0

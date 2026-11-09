@@ -1,15 +1,15 @@
-// Hafnium niri entrypoint.
+// Kansora niri entrypoint.
 // https://niri-wm.github.io/niri/  ·  https://duxlabs.dev/docs/
 //
-// DO NOT EDIT. This file is a symlink to /usr/share/hafnium/dots/niri/config.kdl
-// and follows Hafnium updates. Put your changes in:
+// DO NOT EDIT. This file is a symlink to /usr/share/kansora/dots/niri/config.kdl
+// and follows Kansora updates. Put your changes in:
 //   ~/.config/niri/local.kdl   (just you)
 //   /etc/niri/local.kdl        (every user on this machine)
 // To replace this file entirely, declare "~/.config/niri/config.kdl" in your own
 // ~/.config/mise/config.toml.
 
-// 1. Hafnium defaults (binds, input, layout, window rules)
-include "/usr/share/hafnium/dots/niri/hafnium.kdl"
+// 1. Kansora defaults (binds, input, layout, window rules)
+include "/usr/share/kansora/dots/niri/kansora.kdl"
 
 // 2. Files generated and managed by DMS (Dux) from its settings UI
 include optional=true "dms/alttab.kdl"

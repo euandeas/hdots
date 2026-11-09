@@ -1,4 +1,4 @@
-// Hafnium system-wide niri defaults.
+// Kansora system-wide niri defaults.
 // Machine-wide overrides go in /etc/niri/local.kdl (included at the end).
 include "includes/binds.kdl"
 include "includes/input.kdl"

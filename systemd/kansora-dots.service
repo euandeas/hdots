@@ -1,13 +1,13 @@
 [Unit]
-Description=Deploy missing Hafnium dotfiles
-Documentation=https://github.com/euandeas/hdots
+Description=Deploy missing Kansora dotfiles
+Documentation=https://github.com/euandeas/kdots
 # niri.service is ordered after graphical-session-pre.target, so niri's config is
 # in place before the compositor reads it on first login.
 Before=graphical-session-pre.target
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/hafnium-dots apply
+ExecStart=/usr/bin/kansora-dots apply
 # A broken personal config shouldn't block the session.
 SuccessExitStatus=1
 

@@ -1,4 +1,4 @@
-// Hafnium's default fastfetch config, installed to /etc/xdg/fastfetch/config.jsonc.
+// Kansora's default fastfetch config, installed to /etc/xdg/fastfetch/config.jsonc.
 // Override it per user with ~/.config/fastfetch/config.jsonc
 // (`fastfetch --gen-config` writes a full one to start from).
 // Colours are terminal palette names, so they follow your DMS/Flexoki theme.
@@ -21,8 +21,8 @@
     "os",
     {
       "type": "command",
-      "key": "Hafnium",
-      "text": "rpm -q --qf '%{VERSION}, build %{RELEASE}' hafnium 2>/dev/null | sed -E 's/\\.git([0-9a-f]+)\\.fc[0-9]+$/ (\\1)/' || echo 'not installed'"
+      "key": "Kansora",
+      "text": "rpm -q --qf '%{VERSION}, build %{RELEASE}' kansora 2>/dev/null | sed -E 's/\\.git([0-9a-f]+)\\.fc[0-9]+$/ (\\1)/' || echo 'not installed'"
     },
     "kernel",
     "uptime",

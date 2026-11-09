@@ -1,16 +1,16 @@
-# hdots
+# kdots
 
-Default dotfiles for [Hafnium](https://github.com/euandeas/hafnium), managed with
+Default dotfiles for [Kansora](https://github.com/euandeas/kansora), managed with
 [mise](https://mise.jdx.dev/dotfiles.html).
 
 ## How it works
 
-[`mise/hafnium.toml`](mise/hafnium.toml) is installed as mise's system config. Your
+[`mise/kansora.toml`](mise/kansora.toml) is installed as mise's system config. Your
 own `~/.config/mise/config.toml` sits on top, so any entry with the same path
-replaces Hafnium's.
+replaces Kansora's.
 
-At login, `hafnium-dots apply` deploys any file that's missing and never touches
-ones you've changed. It also has DMS generate its default keybinds. Hafnium adds Mod+E for Dux Files.
+At login, `kansora-dots apply` deploys any file that's missing and never touches
+ones you've changed. It also has DMS generate its default keybinds. Kansora adds Mod+E for Dux Files.
 
 | File | Kind |
 |---|---|
@@ -29,9 +29,9 @@ fastfetch's default config is system-wide in `/etc/xdg/fastfetch/config.jsonc`
 ## Commands
 
 ```sh
-hafnium-dots status          # what's applied
-hafnium-dots reset <path>    # restore a default (your copy is backed up)
-hafnium-dots reset-all
+kansora-dots status          # what's applied
+kansora-dots reset <path>    # restore a default (your copy is backed up)
+kansora-dots reset-all
 ```
 
 To replace or disable a default, add it to your own mise config:
@@ -44,6 +44,6 @@ To replace or disable a default, add it to your own mise config:
 
 ## Building
 
-Hafnium's workflows build and publish the `hafnium-dots` RPM, and
+Kansora's workflows build and publish the `kansora-dots` RPM, and
 [`check.yml`](.github/workflows/check.yml) tests each commit here. See
-[hafnium/docs/building.md](https://github.com/euandeas/hafnium/blob/main/docs/building.md).
+[kansora/docs/building.md](https://github.com/euandeas/kansora/blob/main/docs/building.md).

@@ -1,9 +1,9 @@
-# Ghostty, Hafnium's default terminal.
-# Hafnium copied this file once and will never overwrite it. Edit freely.
+# Ghostty, Kansora's default terminal.
+# Kansora copied this file once and will never overwrite it. Edit freely.
 # Reference: https://ghostty.org/docs/config/reference
-# Restore the default: hafnium-dots reset ~/.config/ghostty/config
+# Restore the default: kansora-dots reset ~/.config/ghostty/config
 
-# Font: Commit Mono, Hafnium's monospace font
+# Font: Commit Mono, Kansora's monospace font
 font-family = "CommitMono Nerd Font Mono"
 font-size = 12
 
