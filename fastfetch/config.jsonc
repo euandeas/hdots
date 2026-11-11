@@ -7,7 +7,7 @@
   // The Kansora K (kansora/build-scripts/render-branding draws the real one)
   "logo": {
     "type": "data",
-    "source": "$1██        ▄██\n██     ▄██▀\n██   ▄██▀\n██  ██▀\n██  ██▄\n██   ▀██▄\n██     ▀██▄\n██        ▀██",
+    "source": "$1███        ▄███\n███     ▄███▀\n███   ▄██▀\n███  ███\n███  ███\n███   ▀██▄\n███     ▀███▄\n███        ▀███",
     "color": { "1": "blue" },
     "padding": { "top": 1, "right": 3 }
   },
