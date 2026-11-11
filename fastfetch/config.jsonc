@@ -4,8 +4,11 @@
 // Colours are terminal palette names, so they follow your DMS/Flexoki theme.
 {
   "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
+  // The Kansora K (kansora/build-scripts/render-branding draws the real one)
   "logo": {
-    "source": "fedora",
+    "type": "data",
+    "source": "$1██        ▄██\n██     ▄██▀\n██   ▄██▀\n██  ██▀\n██  ██▄\n██   ▀██▄\n██     ▀██▄\n██        ▀██",
+    "color": { "1": "blue" },
     "padding": { "top": 1, "right": 3 }
   },
   "display": {
